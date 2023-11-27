@@ -25,3 +25,21 @@ const columnThree = document.querySelectorAll('.column3');
 const diagonalOne = document.querySelectorAll('.diagonal1');
 const diagonalTwo = document.querySelectorAll('.diagonal2');
 
+const rows = [rowOne, rowTwo, rowThree];
+const columns = [columnOne, columnTwo, columnThree];
+const diagonals = [diagonalOne, diagonalTwo];
+
+console.log(tiles.forEach(e => console.log('Hi!')));
+class Board {
+  constructor(rows,columns,diagonals) {
+    tiles.forEach((tile, i) => {
+      this[`tile${i + 1}`] = tile;
+    });
+    this.rows = rows;
+    this.columns = columns;
+    this.diagonals = diagonals;
+  }
+}
+
+const ticTacToe = new Board(rows, columns, diagonals);
+console.log(ticTacToe);
