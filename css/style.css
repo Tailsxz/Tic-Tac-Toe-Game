@@ -1,0 +1,31 @@
+body {
+  text-align: center;
+}
+
+/* Board Styling */
+#board { 
+  width: 300px;
+  height: 300px;
+  margin-inline: auto;
+  margin-block: 2rem;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+}
+
+/* Row Styling */
+.row {
+  height: 100px;
+  display: flex;
+}
+
+/* Tile Styling */
+
+.tile {
+  font-size: 5rem;
+  flex-basis: 33.33%;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
