@@ -15,7 +15,7 @@
 //we can add classes to our tiles to be able to grab these rows with a querySelector
 //lets first grab all of our tiles, rows, columns, and diagonals
 
-const tiles = document.querySelectorAll('.tile');
+const tiles = [...document.querySelectorAll('.tile')];
 const rowOne = document.querySelectorAll('#row1 .tile');
 const rowTwo = document.querySelectorAll('#row2 .tile');
 const rowThree = document.querySelectorAll('#row3 .tile');
@@ -33,6 +33,7 @@ const diagonals = [[...diagonalOne], [...diagonalTwo]];
 class Board {
   #turn = 0;
   #gameOver = false;
+  #gameTied = false;
   constructor(rows,columns,diagonals) {
     tiles.forEach((tile, i) => {
       this[`tile${i + 1}`] = tile;
@@ -46,7 +47,7 @@ class Board {
   
   placeTile(target) {
     //This conditional prevents the user from clicking another tile if the game is over
-    if(this.#gameOver) return console.log('Can\'t set tile, game is over!');
+    if(this.#gameOver || this.#gameTied) return console.log(`Can't set tile, ${this.#gameOver ? 'game is over' : 'game is tied'}`);
     //Here within this conditional, we are using modulus to decide whether an x or an o is placed.
     if (this.#turn % 2 === 0) {
       console.log(target);
@@ -59,12 +60,43 @@ class Board {
   }
   
   checkWin() {
+    //Checking each row for the win condition, XXX or OOO
     this.rows.forEach((row) => {
       if ((row.every((tile) => tile.innerText == 'X')) || row.every((tile) => tile.innerText == 'O')) {
         console.log('Game is over!');
         this.#gameOver = true;
-      }
-    })
+      };
+    });
+
+    //Checking each column for the win condition, XXX or OOO
+    this.columns.forEach((column) => {
+      if ((column.every((tile) => tile.innerText == 'X')) || column.every((tile) => tile.innerText == 'O')) {
+        console.log('Game is over!');
+        this.#gameOver = true;
+      };
+    });
+
+    //Checking each diagonal for the win condition, XXX or OOO
+    this.diagonals.forEach((diagonal) => {
+      if ((diagonal.every((tile) => tile.innerText == 'X')) || diagonal.every((tile) => tile.innerText == 'O')) {
+        console.log('Game is over!');
+        this.#gameOver = true;
+      };
+    });
+  }
+
+  checkTie() {
+    //This conditional will check if everytile contains an x or o and the game hasn't been won, resulting in a tie.
+    if (tiles.every((tile) => tile.innerText)) {
+      console.log('Game is tied!');
+      this.#gameTied = true;
+    }
+  }
+
+  resetBoard() {
+    this.#turn = 0;
+    this.#gameOver = false;
+    this.#gameTied = false;
   }
 }
 
@@ -79,6 +111,7 @@ function applyClickListener() {
       tile.addEventListener('click', (e) => {
         ticTacToeBoard.placeTile(tile)
         ticTacToeBoard.checkWin();
+        ticTacToeBoard.checkTie();
         // ticTacToeBoard.rows.forEach((row) => row.forEach((tile) => console.log(tile.innerText))); here we can see we can grab the innerText for each tile, and check for each row if every tile's inner txt is x or o
       });
     }
