@@ -1,7 +1,7 @@
 # Project Title
-Random Doggo Generator
+Tic Tac Toe Game
 
-Third pass at using APIs, utilizing the dog.ceo API to pull random pictures of a certain breed the user inputs.
+Practicing OOP based programming
 
 ## Getting Started
 
