@@ -25,12 +25,14 @@ const columnThree = document.querySelectorAll('.column3');
 const diagonalOne = document.querySelectorAll('.diagonal1');
 const diagonalTwo = document.querySelectorAll('.diagonal2');
 
-const rows = [rowOne, rowTwo, rowThree];
-const columns = [columnOne, columnTwo, columnThree];
-const diagonals = [diagonalOne, diagonalTwo];
+const rows = [[...rowOne], [...rowTwo], [...rowThree]];
+const columns = [[...columnOne], [...columnTwo], [...columnThree]];
+const diagonals = [[...diagonalOne], [...diagonalTwo]];
 
-console.log(tiles.forEach(e => console.log('Hi!')));
+// console.log(tiles.forEach(e => console.log('Hi!')));
 class Board {
+  #turn = 0;
+  #gameOver = false;
   constructor(rows,columns,diagonals) {
     tiles.forEach((tile, i) => {
       this[`tile${i + 1}`] = tile;
@@ -39,7 +41,48 @@ class Board {
     this.columns = columns;
     this.diagonals = diagonals;
   }
+  //within our board we need a method that handles checking each row/column/diagonal everytime a tile is clicked.
+  //lets start with the logic to be able to apply each x or o depending on the turn;
+  
+  placeTile(target) {
+    //This conditional prevents the user from clicking another tile if the game is over
+    if(this.#gameOver) return console.log('Can\'t set tile, game is over!');
+    //Here within this conditional, we are using modulus to decide whether an x or an o is placed.
+    if (this.#turn % 2 === 0) {
+      console.log(target);
+      target.textContent = 'X';
+      this.#turn++;
+      return;
+    }
+    this.#turn++;
+    return target.textContent = 'O';
+  }
+  
+  checkWin() {
+    this.rows.forEach((row) => {
+      if ((row.every((tile) => tile.innerText == 'X')) || row.every((tile) => tile.innerText == 'O')) {
+        console.log('Game is over!');
+        this.#gameOver = true;
+      }
+    })
+  }
 }
 
-const ticTacToe = new Board(rows, columns, diagonals);
-console.log(ticTacToe);
+const ticTacToeBoard = new Board(rows, columns, diagonals);
+console.log(ticTacToeBoard);
+
+//This function will place the tile on the dom, and check after every placement, if there exists a winning condition, in that any of the rows,columns, or diagonals have three x's or three o's
+function applyClickListener() {
+  for (let tile in ticTacToeBoard) {
+    if (tile.includes('tile')) {
+      tile = ticTacToeBoard[tile];
+      tile.addEventListener('click', (e) => {
+        ticTacToeBoard.placeTile(tile)
+        ticTacToeBoard.checkWin();
+        // ticTacToeBoard.rows.forEach((row) => row.forEach((tile) => console.log(tile.innerText))); here we can see we can grab the innerText for each tile, and check for each row if every tile's inner txt is x or o
+      });
+    }
+  }
+}
+
+applyClickListener();
