@@ -124,6 +124,7 @@ class Board {
     this.#gameOver = false;
     this.#gameTied = false;
     tiles.forEach((tile) => tile.innerText = '');
+    result.innerText = '';
     resetButton.classList.remove('end_game');
   }
 }
