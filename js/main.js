@@ -29,8 +29,9 @@ const rows = [[...rowOne], [...rowTwo], [...rowThree]];
 const columns = [[...columnOne], [...columnTwo], [...columnThree]];
 const diagonals = [[...diagonalOne], [...diagonalTwo]];
 
-//Now lets grab our element to place the result of the game.
-const result = document.querySelector('.game_result')
+//Now lets grab our element to place the result of the game and the reset button
+const result = document.querySelector('.game_result');
+const resetButton = document.querySelector('.button_reset');
 
 // console.log(tiles.forEach(e => console.log('Hi!')));
 class Board {
@@ -64,13 +65,14 @@ class Board {
   }
   
   checkWin() {
-    //Refactoring a function to apply the wincheck on each of the rows, columns, and diagonal
+    //Refactoring a function to apply the win check on each of the rows, columns, and diagonal
     function checkDimension(dimensionsArr) {
       let gameWon = false;
       dimensionsArr.forEach((dimension) => {
         if ((dimension.every((tile) => tile.innerText == 'X')) || dimension.every((tile) => tile.innerText == 'O')) {
           console.log('Game is over!');
           result.innerText = 'Game is over!'
+          resetButton.classList.add('end_game');
           gameWon = true;
         }
       });
@@ -111,8 +113,9 @@ class Board {
     //This conditional will check if everytile contains an x or o and the game hasn't been won, resulting in a tie.
     if (tiles.every((tile) => tile.innerText && !this.#gameOver)) {
       console.log('Game is tied!');
-      this.#gameTied = true;
       result.innerText = 'Game is Tied!';
+      resetButton.classList.add('end_game');
+      this.#gameTied = true;
     }
   }
 
@@ -121,6 +124,7 @@ class Board {
     this.#gameOver = false;
     this.#gameTied = false;
     tiles.forEach((tile) => tile.innerText = '');
+    resetButton.classList.remove('end_game');
   }
 }
 
@@ -144,7 +148,6 @@ function applyClickListener() {
 
 
 function resetButtonListener() {
-  const resetButton = document.querySelector('.button_reset');
   resetButton.addEventListener('click', () => ticTacToeBoard.resetBoard());
 }
 
