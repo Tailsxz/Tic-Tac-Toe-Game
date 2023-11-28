@@ -29,6 +29,9 @@ const rows = [[...rowOne], [...rowTwo], [...rowThree]];
 const columns = [[...columnOne], [...columnTwo], [...columnThree]];
 const diagonals = [[...diagonalOne], [...diagonalTwo]];
 
+//Now lets grab our element to place the result of the game.
+const result = document.querySelector('.game_result')
+
 // console.log(tiles.forEach(e => console.log('Hi!')));
 class Board {
   #turn = 0;
@@ -61,36 +64,55 @@ class Board {
   }
   
   checkWin() {
-    //Checking each row for the win condition, XXX or OOO
-    this.rows.forEach((row) => {
-      if ((row.every((tile) => tile.innerText == 'X')) || row.every((tile) => tile.innerText == 'O')) {
-        console.log('Game is over!');
-        this.#gameOver = true;
-      };
-    });
+    //Refactoring a function to apply the wincheck on each of the rows, columns, and diagonal
+    function checkDimension(dimensionsArr) {
+      let gameWon = false;
+      dimensionsArr.forEach((dimension) => {
+        if ((dimension.every((tile) => tile.innerText == 'X')) || dimension.every((tile) => tile.innerText == 'O')) {
+          console.log('Game is over!');
+          result.innerText = 'Game is over!'
+          gameWon = true;
+        }
+      });
+      return gameWon;
+    }
+    //Here we call our checkDimensionForWin on each of the dimensions, and if none return true, false will be set to #gameOver
+    this.#gameOver = checkDimension(this.rows) || checkDimension(this.columns) || checkDimension(this.diagonals) || false;
 
-    //Checking each column for the win condition, XXX or OOO
-    this.columns.forEach((column) => {
-      if ((column.every((tile) => tile.innerText == 'X')) || column.every((tile) => tile.innerText == 'O')) {
-        console.log('Game is over!');
-        this.#gameOver = true;
-      };
-    });
+    //There we go! Much Cleaner and much less code.
 
-    //Checking each diagonal for the win condition, XXX or OOO
-    this.diagonals.forEach((diagonal) => {
-      if ((diagonal.every((tile) => tile.innerText == 'X')) || diagonal.every((tile) => tile.innerText == 'O')) {
-        console.log('Game is over!');
-        this.#gameOver = true;
-      };
-    });
+    // //Checking each row for the win condition, XXX or OOO
+    // this.rows.forEach((row) => {
+    //   if ((row.every((tile) => tile.innerText == 'X')) || row.every((tile) => tile.innerText == 'O')) {
+    //     console.log('Game is over!');
+    //     result.innerText = 'Game is over!'
+    //     this.#gameOver = true;
+    //   };
+    // });
+
+    // //Checking each column for the win condition, XXX or OOO
+    // this.columns.forEach((column) => {
+    //   if ((column.every((tile) => tile.innerText == 'X')) || column.every((tile) => tile.innerText == 'O')) {
+    //     console.log('Game is over!');
+    //     this.#gameOver = true;
+    //   };
+    // });
+
+    // //Checking each diagonal for the win condition, XXX or OOO
+    // this.diagonals.forEach((diagonal) => {
+    //   if ((diagonal.every((tile) => tile.innerText == 'X')) || diagonal.every((tile) => tile.innerText == 'O')) {
+    //     console.log('Game is over!');
+    //     this.#gameOver = true;
+    //   };
+    // });
   }
 
   checkTie() {
     //This conditional will check if everytile contains an x or o and the game hasn't been won, resulting in a tie.
-    if (tiles.every((tile) => tile.innerText)) {
+    if (tiles.every((tile) => tile.innerText && !this.#gameOver)) {
       console.log('Game is tied!');
       this.#gameTied = true;
+      result.innerText = 'Game is Tied!';
     }
   }
 
