@@ -1,5 +1,18 @@
 body {
   text-align: center;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+header {
+  margin-block: 2rem 5rem;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 3rem;
 }
 
 /* Board Styling */
@@ -28,4 +41,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Button Styling */
+.button {
+  margin-block: 2rem;
+  background: #fff;
+  border-radius: 5px;
+  padding: 1rem 2rem;
 }

@@ -118,4 +118,11 @@ function applyClickListener() {
   }
 }
 
+function resetButtonListener() {
+  const resetButton = document.querySelector();
+  resetButton.addEventListener('click', () => ticTacToeBoard.resetBoard());
+}
+
 applyClickListener();
+resetButtonListener();
+
