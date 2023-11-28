@@ -47,7 +47,8 @@ class Board {
   
   placeTile(target) {
     //This conditional prevents the user from clicking another tile if the game is over
-    if(this.#gameOver || this.#gameTied) return console.log(`Can't set tile, ${this.#gameOver ? 'game is over' : 'game is tied'}`);
+    //target.textContent prevents user from pressing on the same tile
+    if(this.#gameOver || this.#gameTied || target.textContent) return console.log(`Can't set tile, ${this.#gameOver ? 'game is over' : 'game is tied'}`);
     //Here within this conditional, we are using modulus to decide whether an x or an o is placed.
     if (this.#turn % 2 === 0) {
       console.log(target);
@@ -97,6 +98,7 @@ class Board {
     this.#turn = 0;
     this.#gameOver = false;
     this.#gameTied = false;
+    tiles.forEach((tile) => tile.innerText = '');
   }
 }
 
@@ -118,8 +120,9 @@ function applyClickListener() {
   }
 }
 
+
 function resetButtonListener() {
-  const resetButton = document.querySelector();
+  const resetButton = document.querySelector('.button_reset');
   resetButton.addEventListener('click', () => ticTacToeBoard.resetBoard());
 }
 
