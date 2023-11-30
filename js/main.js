@@ -137,7 +137,7 @@ function applyClickListener() {
   for (let tile in ticTacToeBoard) {
     if (tile.includes('tile')) {
       tile = ticTacToeBoard[tile];
-      tile.addEventListener('click', (e) => {
+      tile.addEventListener('click', () => {
         ticTacToeBoard.placeTile(tile)
         ticTacToeBoard.checkWin();
         ticTacToeBoard.checkTie();
